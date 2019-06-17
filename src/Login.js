@@ -1,9 +1,115 @@
 import React, {Component} from 'react';
-import {goToHome} from './Navigation'
 import {StyleSheet, Image, View, Modal, TouchableHighlight} from 'react-native';
-import {Container, Content,Text, Item, Input, Footer, FooterTab, Button, List, ListItem} from 'native-base'
+import {Container, Content,Text, Item, Input, Footer, FooterTab, Button, List, ListItem} from 'native-base';
+import {Navigation} from 'react-native-navigation';
 
 export default class App extends Component{
+
+    goToHome = () => {
+        Navigation.setRoot({
+            root: {
+               bottomTabs: {
+                 children: [{
+                   stack: {
+                     children: [{
+                       component: {
+                         name: 'Home',
+                         passProps: {
+                           text: 'This is Home'
+                         }
+                       }
+                     }],
+                     options: {
+                       bottomTab: {
+                         text: 'Home',
+                         icon: require('./img/home-outline.png'),
+                         testID: 'FIRST_TAB_BAR_BUTTON'
+                       },
+                       topBar: {
+                           drawBehind:true,
+                           visible:false
+                       }
+                     }
+                   }
+                 },
+                 {
+                   component: {
+                     name: 'Search',
+                     passProps: {
+                       text: 'This is tab 3'
+                     },
+                     options: {
+                       bottomTab: {
+                         text: 'Search',
+                         icon: require('./img/magnify.png'),
+                         testID: 'THIRD_TAB_BAR_BUTTON'
+                       },topBar: {
+                            drawBehind:true,
+                            visible:false
+                        }
+                     }
+                   }
+                 },
+                 {
+                    component: {
+                      name: 'Add',
+                      passProps: {
+                        text: 'This is tab 3'
+                      },
+                      options: {
+                        bottomTab: {
+                          text: 'Post',
+                          icon: require('./img/plus-circle-outline.png'),
+                          testID: 'FOURTH_TAB_BAR_BUTTON'
+                        },topBar: {
+                             drawBehind:true,
+                             visible:false
+                         }
+                      }
+                    }
+                  },
+                  {
+                    component: {
+                      name: 'Likes',
+                      passProps: {
+                        text: 'This is tab 3'
+                      },
+                      options: {
+                        bottomTab: {
+                          text: 'Likes',
+                          icon: require('./img/heart-outline.png'),
+                          testID: 'FIFTH_TAB_BAR_BUTTON'
+                        },topBar: {
+                             drawBehind:true,
+                             visible:false
+                         }
+                      }
+                    }
+                  },
+                 {
+                   component: {
+                     name: 'Profile',
+                     passProps: {
+                       text: 'This is tab 2'
+                     },
+                     options: {
+                       bottomTab: {
+                         text: 'Profile',
+                         icon: require('./img/account-outline.png'),
+                         testID: 'SECOND_TAB_BAR_BUTTON'
+                       },topBar: {
+                            drawBehind:true,
+                            visible:false
+                        }
+                     }
+                   }
+                 },
+                ],
+                
+               }
+             }
+         });
+    }
 
     // state = {
     //     modalVisible:false
@@ -45,7 +151,7 @@ export default class App extends Component{
                     <Item regular style={styles.textItem} >
                         <Input placeholder='Password' placeholderTextColor='#AAA' secureTextEntry={true} style={{ fontSize:13, marginHorizontal:10 }} />
                     </Item>
-                    <Button full style={styles.loginBtn} onPress={goToHome}>
+                    <Button full style={styles.loginBtn} onPress={this.goToHome}>
                         <Text uppercase={false}>Log In</Text>
                     </Button>
                     <View style={{ flexDirection:"row", justifyContent:"center", alignItems:"center", borderBottomWidth:1, borderBottomColor:"#AAA", paddingBottom:25, paddingTop:15  }}>

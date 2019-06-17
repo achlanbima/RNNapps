@@ -174,7 +174,7 @@ export default class Home extends Component{
 
             </Content>
 
-            <BottomBar/>
+            {/* <BottomBar/> */}
             
          </Container>
       );
