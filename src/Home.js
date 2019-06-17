@@ -97,7 +97,7 @@ export default class Home extends Component{
                      (
 
                         <View key={Index} style={{marginHorizontal:10}}>
-                           <Thumbnail style={{alignSelf:"center"}} medium source={story.pic} />
+                           <Thumbnail style={{alignSelf:"center", borderWidth:2, borderColor:"#F88", paddingHorizontal:5, paddingVertical:5}} medium source={story.pic} />
                            <Text style={{alignSelf:"center"}} >{story.name}</Text>
                         </View>
                      )
