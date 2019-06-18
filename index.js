@@ -6,9 +6,9 @@ import { Navigation } from "react-native-navigation";
 // import App from './App';
 // import App2 from './App2';
 import {registerScreen} from './src/ScreenList'
-// import {Screen2} from './src/test/Screen'
+import {Screen2} from './src/test/Screen'
 
-// Screen2();
+Screen2();
 
 registerScreen();
 

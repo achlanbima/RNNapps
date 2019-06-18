@@ -19,7 +19,9 @@ goHome = () => {
               options: {
                 bottomTab: {
                   text: 'Tab 1',
-                  testID: 'FIRST_TAB_BAR_BUTTON'
+                  testID: 'FIRST_TAB_BAR_BUTTON',
+                  icon: require('../img/magnify.png'),
+                  selectedIcon: require('../img/account.png')
                 }
               }
             }
@@ -33,7 +35,8 @@ goHome = () => {
               options: {
                 bottomTab: {
                   text: 'Tab 2',
-                  testID: 'SECOND_TAB_BAR_BUTTON'
+                  testID: 'SECOND_TAB_BAR_BUTTON',
+                  icon: require('../img/magnify.png')
                 }
               }
             }
@@ -46,10 +49,15 @@ goHome = () => {
 export default class Index extends Component{
    render(){
       return(
-         <View>
-            <Text>This is Index</Text>
-            <Button onPress={goHome} title="Go Home!"/>
-         </View>
+            <View style={{flex:1}}>
+              <View style={{flex:1, backgroundColor:"#CCC"}}><Text>A</Text></View>
+              <View style={{flex:6, backgroundColor:"#DDD"}}><Text>A</Text></View>
+              <View style={{flex:1, backgroundColor:"#EEE"}}><Text>A</Text></View>
+              <View style={{flex:1, backgroundColor:"#FFF"}}><Text>A</Text></View>
+              <View style={{flex:1, backgroundColor:"#EEE"}}><Text>A</Text></View>
+              <View style={{flex:1, backgroundColor:"#DDD"}}><Text>A</Text></View>
+              <View style={{flex:1, backgroundColor:"#CCC"}}><Text>A</Text></View>
+            </View>
       )
    }
 }

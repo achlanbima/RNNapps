@@ -22,7 +22,7 @@ export const goToHome = () => {
                     testID: 'FIRST_TAB_BAR_BUTTON'
                   },
                   topBar: {
-                      drawBehind:true,
+                      drawBehind:false,
                       visible:false
                   }
                 }
@@ -40,10 +40,6 @@ export const goToHome = () => {
                     icon: require('./img/magnify.png'),
                     testID: 'THIRD_TAB_BAR_BUTTON'
                   },
-                  topBar: {
-                       drawBehind:true,
-                       visible:false
-                   }
                 }
               }
             },
@@ -56,12 +52,9 @@ export const goToHome = () => {
                  options: {
                    bottomTab: {
                      text: 'Post',
-                     icon: require('./img/plus-circle-outline.png'),
+                     icon: require('./img/plus-square-outline.png'),
                      testID: 'FOURTH_TAB_BAR_BUTTON'
-                   },topBar: {
-                        drawBehind:true,
-                        visible:false
-                    }
+                   },
                  }
                }
              },
@@ -76,10 +69,7 @@ export const goToHome = () => {
                      text: 'Likes',
                      icon: require('./img/heart-outline.png'),
                      testID: 'FIFTH_TAB_BAR_BUTTON'
-                   },topBar: {
-                        drawBehind:true,
-                        visible:false
-                    }
+                   },
                  }
                }
              },
@@ -92,13 +82,10 @@ export const goToHome = () => {
                 options: {
                   bottomTab: {
                     text: 'Profile',
-                    icon: require('./img/account-outline.png'),
+                    icon: require('./img/person-outline.png'),
                     selectedIcon: require('./img/account.png'),
                     testID: 'SECOND_TAB_BAR_BUTTON'
-                  },topBar: {
-                       drawBehind:true,
-                       visible:false
-                   }
+                  },
                 }
               }
             },
