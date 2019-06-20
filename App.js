@@ -14,23 +14,7 @@ export default class App extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <Button onPress={() => {
-          Navigation.push(this.props.componentId, {
-            component: {
-              name: "app2",
-              passProps: {
-                text: 'Pushed screen'
-              },
-              options: {
-                topBar: {
-                  title: {
-                    text: 'Pushed screen title'
-                  }
-                }
-              }
-            }
-          })
-        }} title="To App2"/>
+        <Text>Sample</Text>
       </View>
     );
   }

@@ -1,11 +1,11 @@
 import React, {Component} from 'react';
 import {View, Text} from 'react-native';
 
-export default class Likes extends Component{
+export default class Index extends Component{
   render(){
     return(
       <View>
-        <Text>Likes</Text>
+        <Text>Search</Text>
       </View>
     )
   }

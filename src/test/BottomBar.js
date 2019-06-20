@@ -3,7 +3,7 @@ import {Footer, FooterTab, Button,} from 'native-base'
 import Entypo from 'react-native-vector-icons/Entypo'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import {goToProfile, goToHome} from './Navigation'
+import {goToProfile, goToHome} from '../components/Navigation'
 
 export class BottomBar extends Component{
    render(){

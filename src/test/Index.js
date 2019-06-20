@@ -20,8 +20,8 @@ goHome = () => {
                 bottomTab: {
                   text: 'Tab 1',
                   testID: 'FIRST_TAB_BAR_BUTTON',
-                  icon: require('../img/magnify.png'),
-                  selectedIcon: require('../img/account.png')
+                  icon: require('../icon/magnify.png'),
+                  selectedIcon: require('../icon/account.png')
                 }
               }
             }
@@ -36,7 +36,7 @@ goHome = () => {
                 bottomTab: {
                   text: 'Tab 2',
                   testID: 'SECOND_TAB_BAR_BUTTON',
-                  icon: require('../img/magnify.png')
+                  icon: require('../icon/magnify.png')
                 }
               }
             }

@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {View, Text} from 'react-native';
 
-export default class Add extends Component{
+export default class Index extends Component{
   render(){
     return(
       <View>
