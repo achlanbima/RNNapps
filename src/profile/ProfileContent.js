@@ -9,17 +9,24 @@ import PostCard from '../components/PostCard';
 
 
 
-
 export default class ProfileContent extends Component{
 
+  state = {
+    selectedTab : 0
+  }
+
+  changeTab(index){
+    this.setState({selectedTab : index})  
+    console.log(index)
+  }
 
 
   render(){
     return(
         
 
-        <Tabs tabBarBackgroundColor="#FFF" locked>
-          <Tab heading={ <TabHeading style={{backgroundColor:"#FFF"}}><MaterialIcons name='grid-on' size={28} color="#4297FF" style={{flexDirection:"row", flexWrap:"wrap"}}/></TabHeading>}>
+        <Tabs tabBarBackgroundColor="#FFF" locked onChangeTab={(index)=> this.changeTab(index.i)} >
+          <Tab heading={ <TabHeading style={{backgroundColor:"#FFF"}}><MaterialIcons name='grid-on' size={28} color={ this.state.selectedTab == 0 ? "#4297FF" : "#AAA" } style={{flexDirection:"row", flexWrap:"wrap"}}/></TabHeading>} >
               <View style={{flexDirection:"row", flexWrap:"wrap"}}>
 
               <FlatList
@@ -43,7 +50,7 @@ export default class ProfileContent extends Component{
                 </View>
               </Content> */}
           </Tab>
-          <Tab heading={ <TabHeading style={{backgroundColor:"#FFF"}}><AntDesign name='laptop' size={28} color="#AAA"/></TabHeading>}>
+          <Tab heading={ <TabHeading style={{backgroundColor:"#FFF"}}><AntDesign name='laptop' size={28} color={ this.state.selectedTab == 1 ? "#4297FF" : "#AAA" }/></TabHeading>}>
             
             <FlatList
               data={posts}
@@ -55,7 +62,7 @@ export default class ProfileContent extends Component{
                     <PostCard key={index} index={index} profilePic={post.profilePic} user={post.user} pics={post.pic} like={post.like} caps={post.caption} commentInput={false} />
                   ))} */}
           </Tab>
-          <Tab heading={ <TabHeading style={{backgroundColor:"#FFF"}}><MaterialIcons name='person-pin' size={28} color="#AAA"/></TabHeading>}>
+          <Tab heading={ <TabHeading style={{backgroundColor:"#FFF"}}><MaterialIcons name='person-pin' size={28} color={ this.state.selectedTab == 2 ? "#4297FF" : "#AAA" }/></TabHeading>}>
               <Text>SSSS</Text>
           </Tab>
         </Tabs>

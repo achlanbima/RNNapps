@@ -1,19 +1,47 @@
 import React, {Component} from 'react';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scrollview'
 import Dialog, { DialogContent } from 'react-native-popup-dialog';
 import {StyleSheet, 
     Image, 
     View,  
-    TouchableWithoutFeedback
+    TouchableWithoutFeedback,
+    TouchableHighlight,
+    ScrollView,
+    FlatList,
+    TouchableOpacity
 } from 'react-native';
 import {Text, Item, Input, Footer, FooterTab, Button, Container, Content} from 'native-base';
 import {goToHome} from '../components/Navigation'
 import AntDesign from 'react-native-vector-icons/AntDesign'
 import { Navigation } from 'react-native-navigation';
+import TextField from '../components/TextField'
 
 
 
 export default class Index extends Component{
 
+    languages = [
+        "Language 1",
+        "Language 1",
+        "Language 1",
+        "Language 1",
+        "Language 1",
+        "Language 1",
+        "Language 1",
+        "Language 1",
+        "Language 1",
+        "Language 1",
+        "Language 1",
+        "Language 1",
+        "Language 1",
+        "Language 1",
+        "Language 1",
+        "Language 1",
+        "Language 1",
+        "Language 1",
+        "Language 1",
+        "Language 1",
+    ];
 
     state = {
         modalVisible: false,
@@ -26,16 +54,46 @@ export default class Index extends Component{
     render(){
         return(
 
+            <KeyboardAwareScrollView  keyboardShouldPersistTaps={'always'}
+                    style={{flex:1}}
+                    behavior="padding" enabled
+                    showsVerticalScrollIndicator={false}>
+                {/* Your code goes here*/}
 
             <Container>
+
                     <Dialog
                         visible={this.state.modalVisible}
                         onTouchOutside={() => {
-                        this.setState({ modalVisible: false });
+                            this.setState({ modalVisible: false });
                         }}
-                    >
-                        <DialogContent>
-                        <Text>A</Text>
+                        onHardwareBackPress={() => true}
+                        >
+                        <DialogContent style={{width:320, maxHeight:580}}>
+                            <View style={{paddingTop:12, paddingBottom:12, borderBottomWidth:1 ,paddingHorizontal:0, marginHorizontal:-18, borderBottomColor:"#CCC", flexDirection:"row"}}>
+                                <Text style={{ paddingHorizontal:12, flex:9}}>SELECT YOUR LANGUAGE </Text>
+                                <TouchableOpacity style={{flex:1}} onPress={() => {this.setState({ modalVisible: false })}}>
+                                    <AntDesign name="close" size={20}  />
+                                </TouchableOpacity>
+                            </View>
+                                <Item style={{paddingHorizontal:10, marginLeft:-10, marginRight:-10}}>
+                                <Image source={require('../icon/magnify.png')} style={{width:23, height:23, marginRight:10}} />
+                                    <Input placeholder="Search" placeholderTextColor="#CCC" />
+                                </Item>
+                                <ScrollView>
+                                    
+                                    <FlatList
+                                        data={this.languages}
+                                        keyExtractor={(item, index) => {return index.toString()}}
+                                        renderItem={({item, index}) => 
+                                        <TouchableOpacity key={index} >
+                                                <View style={{width:"100%", backgroundColor:"#FFF", paddingVertical:10, borderBottomWidth:1, borderBottomColor:"#AAA"}}>
+                                                    <Text style={{color:"#000"}}>{item}</Text>
+                                                </View>
+                                            </TouchableOpacity>
+                                        }
+                                        />
+                                </ScrollView>
                         </DialogContent>
                     </Dialog>
 
@@ -62,7 +120,23 @@ export default class Index extends Component{
                         <View style={styles.inlineBorderedBottom}>
                             <Text style={styles.grey}>Forgot your login details? 
                             </Text>
-                            <TouchableWithoutFeedback>
+                            <TouchableWithoutFeedback onPress={() => {
+                                Navigation.push(this.props.componentId, {
+                                    component:{
+                                        name: "Help",
+                                        passProps: "pushed"
+                                    },
+                                    options:{
+                                        topBar:{
+                                            title:{
+                                                text:"Pushed Sign In"
+                                            },
+                                            drawBehind:false,
+                                            visible:true,
+                                        }
+                                    }
+                                })
+                            }}>
                                 <Text style={styles.blackLink}> Get help signing in.</Text>
                             </TouchableWithoutFeedback>
                         </View>
@@ -82,21 +156,13 @@ export default class Index extends Component{
                     </FooterTab>
                 </Footer>
             </Container>
+        </KeyboardAwareScrollView>
 
 
         )
     }
 }
 
-class TextField extends Component{
-    render(){
-        return (
-            <Item regular style={styles.textItem} >
-                <Input placeholder={this.props.placeholder} placeholderTextColor='#AAA' secureTextEntry={this.props.password} style={ styles.placeholder } />
-            </Item>
-        )
-    }
-}
 
 const styles = StyleSheet.create({
     container:{
@@ -154,19 +220,6 @@ const styles = StyleSheet.create({
     logo: {
         width: 200, 
         height: 80,
-    },
-
-    textItem: {
-        marginTop:15,
-        borderRadius: 5,
-        backgroundColor:'#F9F9F9',
-        height:45,
-        marginLeft:0
-    },
-
-    placeholder: {
-        fontSize:13, 
-        marginHorizontal:10
     },
 
     loginBtn:{

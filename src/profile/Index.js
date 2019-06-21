@@ -61,7 +61,7 @@ export default class Index extends Component{
                </Right>
             </Header>
 
-            <Content style={{backgroundColor:"blue"}}>
+            <Content>
                <View>
 
                <Card transparent>

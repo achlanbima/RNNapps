@@ -25,10 +25,33 @@ Navigation.events().registerAppLaunchedListener(() => {
   
   Navigation.setRoot({
     root: {
-      component: {
-        name:"Login"
+      stack:{
+        children:[{
+          component: {
+            name:"Login"
+          }
+        }],
+        options:{
+          topBar:{
+            drawBehind:true,
+            visible:false,
+            id:"top-bar"
+          }
+      
+        }      
       }
-             
     }
   });
+
+  Navigation.setDefaultOptions({
+    animations: {
+      push: {
+        enabled: 'false'
+      },
+      pop:{
+        enabled: 'false'
+      }
+    }
+  });
+
 });

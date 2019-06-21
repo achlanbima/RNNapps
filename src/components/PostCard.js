@@ -26,12 +26,12 @@ export default class PostCard extends Component {
       super(props)
       this.state = {
          visible:false,
-         user: "null"
+         user: "null",
+         like : null,
+         bookmark : null
       }
 
    }
-
-
   render() {
      return(
         <View>
@@ -62,8 +62,16 @@ export default class PostCard extends Component {
               
               <CardItem style={styles.postButton}>
                  <Left>
-                    <Button transparent onPress={(e) => console.log(e)}>
-                       <Image source={require('../icon/heart-outline.png')} style={styles.leftIcon} />
+                    <Button transparent  onPress={(e) => {
+                       this.setState({like : (this.state.like == null ? e.target : null)})
+                       console.log(this.state.like)
+                       console.log(e.target)
+                       }}>
+                        {this.state.like != null ?
+                        <Image source={require('../icon/heart-red.png')} style={styles.leftIcon} /> :
+                        <Image source={require('../icon/heart-outline.png')} style={styles.leftIcon} />
+                        
+                        }
                     </Button>
                     <Button transparent>
                        <Image source={require('../icon/bubble-outline.png')} style={styles.leftIcon} />
@@ -74,8 +82,15 @@ export default class PostCard extends Component {
                  </Left>
                  <Body/>
                  <Right>
-                    <Button transparent>
-                       <Image source={require('../icon/bookmark-outline.png')} style={[styles.leftIcon, {height:23} ]} />
+                    <Button transparent onPress={(e) => {
+                       this.setState({bookmark : (this.state.bookmark == null ? e.target : null)})
+                       console.log(this.state.bookmark)
+                       console.log(e.target)
+                       }}>
+                          {this.state.bookmark != null ?
+                           <Image source={require('../icon/bookmark.png')} style={[styles.leftIcon, {height:23} ]} /> :
+                           <Image source={require('../icon/bookmark-outline.png')} style={[styles.leftIcon, {height:23} ]} /> 
+                          }
                     </Button>
                  </Right>
               </CardItem>
