@@ -47,7 +47,13 @@ export default class Index extends Component{
                   <Button transparent style={{marginRight: -10}}>
                      <Image source={require('../icon/tv.png')} style={styles.topIcon} />
                   </Button>
-                  <Button transparent>
+                  <Button transparent onPress={()=>
+                     Navigation.push(this.props.componentId, {
+                        component:{
+                           name: "Direct"
+                        }
+                     })
+                  }>
                      <Image source={require('../icon/paper-plane.png')} style={styles.topIcon} />
                   </Button>
                </Right>

@@ -1,3 +1,4 @@
+import Dialog, { DialogContent } from 'react-native-popup-dialog';
 import React, {Component} from 'react';
 import {
    View, 
@@ -6,7 +7,9 @@ import {
    ScrollView, 
    StatusBar,
    StyleSheet,
-   TouchableWithoutFeedback
+   TouchableWithoutFeedback,
+   FlatList,
+   TouchableOpacity
 } from 'react-native';
 
 import {
@@ -32,11 +35,33 @@ export default class PostCard extends Component {
       }
 
    }
+
+   menus = ["Report...", "Copy Link", "Turn On Post Notification", "Share Link...", "Unfollow","Mute"]
+
   render() {
      return(
         <View>
 
-        
+
+        <Dialog
+            visible={this.state.visible}
+            onTouchOutside={() => {
+               this.setState({ visible: false });
+            }}
+         >
+            <DialogContent style={{height:270, width:250, alignItems:"center", paddingHorizontal: 5}}>
+               <FlatList
+                  data={this.menus}
+                  keyExtractor={(item, index) => {return index.toString()}}
+                  renderItem={({item, index}) =>
+                     <TouchableOpacity key={index} >
+                        <View style={{width:"100%", backgroundColor:"#FFF", paddingVertical:10, }}>
+                              <Text style={{color:"#000", fontSize:15}}>{item}</Text>
+                        </View>
+                     </TouchableOpacity> }
+               />
+            </DialogContent>
+         </Dialog>
       
          
            <Card style={styles.posts} transparent>
@@ -48,9 +73,13 @@ export default class PostCard extends Component {
                     </Body>
                  </Left>
                  <Right>
-                     <TouchableWithoutFeedback >
+                     <TouchableWithoutFeedback  onPress={() => {
+                        this.setState({ visible: true });
+                     }}>
+                        <View style={{paddingLeft:30}}>
 
-                        <Entypo name='dots-three-vertical' size={15} color="#555"></Entypo>
+                           <Entypo name='dots-three-vertical' size={15} color="#555" ></Entypo>
+                        </View>
                      </TouchableWithoutFeedback>
                  </Right>
               </CardItem>

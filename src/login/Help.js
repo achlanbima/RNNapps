@@ -1,12 +1,19 @@
 import React, {Component} from 'react'
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scrollview'
 import {View, Text, StyleSheet, TouchableWithoutFeedback, Image} from 'react-native'
-import {Header, Left, Title, Container, Content} from 'native-base'
+import {Header, Left, Title, Container, Content, Footer, FooterTab} from 'native-base'
 import TextField from '../components/TextField'
 
 
 export default class Help extends Component{
   render(){
     return(
+      
+      
+      <KeyboardAwareScrollView  keyboardShouldPersistTaps={'always'}
+                    style={{flex:1}}
+                    behavior="padding" enabled
+                    showsVerticalScrollIndicator={false}>
       <Container>
         <Header style={{backgroundColor:"#FFF", justifyContent:"flex-start", alignItems:"center"}}>
           <Text style={{fontSize:20, color:"#000", fontWeight:"400"}}>Login Help</Text>
@@ -33,7 +40,16 @@ export default class Help extends Component{
             </View>
           </View>
         </Content>
+        <Footer>
+            <FooterTab style={styles.footer}>
+              <Text uppercase={false} style={[styles.grey]}>For more help, visit the </Text>
+              <TouchableWithoutFeedback>
+                  <Text style={styles.blackLink}>Instagram Help Center</Text>
+              </TouchableWithoutFeedback>
+            </FooterTab>
+        </Footer>
       </Container>
+      </KeyboardAwareScrollView>
     )
   }
 } 
@@ -71,5 +87,23 @@ const styles = StyleSheet.create({
   blue:{
       color:"#4267B2",
       fontSize:13
+  },
+ 
+  footer:{
+    borderTopColor: '#FFF',
+    backgroundColor:'#FFF',
+    justifyContent:'center',
+    alignItems:'center',
+    paddingBottom: 15,
+  },
+  grey:{
+    color:'#AAA',
+    fontSize:12
+  },
+
+  blackLink:{
+      color:'#000',
+      fontSize:12,
+      fontWeight: '500',
   },
 });

@@ -30,11 +30,7 @@ export const goToHome = () => {
                   topBar: {
                       drawBehind:true,
                       visible:false,
-                      leftButtons: {
-                        icon: require('../icon/camera.png'),
-                        id: 'buttonOne',
-                        
-                      },
+                      
                   },
                   
                 },
@@ -147,6 +143,9 @@ export const goToHome = () => {
                bottomTabs: {
                  animate: false,
                  titleDisplayMode: 'alwaysHide',
+               },
+               topBar:{
+                 animate:false
                }
              }
            

@@ -51,6 +51,14 @@ export default class Index extends Component{
         this.setState({modalVisible: visible});
       }
 
+      toSignUp(prop){
+          Navigation.push(prop, {
+              component:{
+                  name: "SignUp"
+              }
+          })
+      }
+
     render(){
         return(
 
@@ -147,10 +155,10 @@ export default class Index extends Component{
                         </View>
                     </View>
                 </Content>
-                    <Footer>
+                <Footer>
                     <FooterTab style={styles.footer}>
                             <Text uppercase={false} style={[styles.grey]}>Dont have an account?</Text>
-                            <TouchableWithoutFeedback>
+                            <TouchableWithoutFeedback onPress={() => this.toSignUp(this.props.componentId)}>
                                 <Text style={styles.blackLink}> Sign up.</Text>
                             </TouchableWithoutFeedback>
                     </FooterTab>
@@ -183,14 +191,15 @@ const styles = StyleSheet.create({
         fontSize:13
     },
 
-    grey:{
-        color:'#AAA',
-        fontSize:12
-    },
-
+    
     white:{
         color:"#FFF",
         fontSize:13
+    },
+    
+    grey:{
+        color:'#AAA',
+        fontSize:12
     },
 
     blackLink:{
