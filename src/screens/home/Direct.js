@@ -13,7 +13,7 @@ export default class Direct extends Component{
         drawBehind:false,
         visible:true
       },
-      bottomTab:{
+      bottomTabs:{
         drawBehind:true,
         visible:false
       }

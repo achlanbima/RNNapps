@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {View, Text, Image,  TouchableHighlight, StyleSheet} from 'react-native';
+import {View, Text, Image,  TouchableHighlight, StyleSheet, AsyncStorage} from 'react-native';
 import {
    Container, 
    Header, 
@@ -23,7 +23,6 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import {Navigation} from 'react-native-navigation'
 
-import {myImages} from '../Data';
 
 import ProfileContent from './ProfileContent'
 
@@ -31,18 +30,35 @@ export default class Index extends Component{
 
    
 
-   render(){
-      return(
-         <Container>
+   
+   constructor(props){
+      super(props)
+      this.state = {
+         loginInfo:[]
+      }
+      Navigation.events().bindComponent(this);
+      
+   }
+   
+   componentDidAppear(){
+      AsyncStorage.getItem('info').then((info) => this.setState({loginInfo: JSON.parse(info)}))
+      }
+      
+      
+      render(){
+         return(
+            <Container>
             <Header style={styles.header} has>
-               <Left style={{marginLeft:-5}}>
-                  <Button transparent onPress={()=>Navigation.push(this.props.componentId, {
+               <Left style={{marginLeft:-5, flex:2}}>
+                  <Button  transparent onPress={()=>Navigation.push(this.props.componentId, {
                      component:{
                         name:"myApp"
                      }
                   })}>
-                     <Text style={styles.headerTitle}>My Profile</Text>
-                     <Ionicons name='ios-arrow-down' size={15} color="#000" />
+                     
+                        <Text  style={styles.headerTitle}>{this.state.loginInfo.username}</Text>
+                        <Ionicons name='ios-arrow-down' size={15} color="#000" />
+                     
                   </Button>
                </Left>
                <Right style={{marginRight: -5}}>
@@ -68,7 +84,7 @@ export default class Index extends Component{
                   <CardItem>
                   <Left>
                      <View style={{ marginVertical:7, marginHorizontal:7}}>
-                        <Thumbnail large source={{uri: "https://facebook.github.io/react-native/docs/assets/favicon.png"}} />
+                        <Thumbnail large source={{uri: this.state.loginInfo.profile_pic}} />
                         <MaterialIcons name='add-circle' size={25} color="#4297FF" style={styles.miniPlus} />
                      </View>
                   </Left>
@@ -97,7 +113,7 @@ export default class Index extends Component{
                   </Right>               
                   </CardItem>
                   <CardItem>
-                     <Text style={{fontWeight:"bold"}}>User</Text>
+                     <Text style={{fontWeight:"bold"}}>{this.state.loginInfo.username}</Text>
                   </CardItem>
                </Card>
                </View>
@@ -105,7 +121,7 @@ export default class Index extends Component{
 
                
                
-                  <ProfileContent />
+                  <ProfileContent id={this.state.loginInfo.id} parentComponentId={this.props.componentId} />
                </Content>
                
                </Container>
@@ -122,9 +138,11 @@ const styles = StyleSheet.create({
       height:50
    },
    headerTitle:{
-      fontSize:17, 
-      marginRight:10, 
-      color:"#000"
+      fontSize:17,
+      minWidth: 50, 
+      marginRight:20,
+      paddingRight:10, 
+      color:"#000",
    },
    miniPlus:{
       position:"absolute", 

@@ -6,7 +6,8 @@ import {
    ScrollView, 
    StatusBar,
    StyleSheet,
-   FlatList
+   FlatList,
+   AsyncStorage
 } from 'react-native';
 
 import {
@@ -20,24 +21,85 @@ import {
    Card, CardItem, Thumbnail, Item, Input} from 'native-base';
 import Entypo from 'react-native-vector-icons/Entypo'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import {stories, posts} from '../Data'
+import {stories, posts} from '../../Data'
 import { Navigation } from 'react-native-navigation';
-import PostCard from '../components/PostCard'
+import PostCard from '../../components/PostCard'
+import axios from 'axios'
+import Loading from '../../components/Loading'
 
+const GLOBAL = require('../../Globals')
+
+const url = GLOBAL.API_URL
+const userPic = ""
 
 export default class Index extends Component{
+   
+
+   constructor(props){
+      super(props)
+      this.state = {
+         posts : [],
+         userLogin : [],
+         loading: false
+      }
+      Navigation.events().bindComponent(this);
+      this.state = {
+         text: 'nothing yet'
+      };
+      this.userLog = []
+      
+   }
+   
+   
+   
+   
+   componentWillMount(){
+      console.log("Will mount");
+      
+   }
+   
+   
+   componentDidAppear(){
+      this.fetchAll();
+      console.log(" Appear..");
+   }
+
+   componentDidDisappear() {
+      console.log('componentDidDisappear');
+    }
+   
+
+   async fetchAll(){
+      this.setState({loading:true})
+      const token = await AsyncStorage.getItem('@token')
+      const value = await AsyncStorage.getItem('info');
+      this.userLog = JSON.parse(value)
+      axios.get(`${url}/posts`, {
+         headers:{
+            Authorization:token
+         }
+      })
+      .then((res) => {
+         this.setState({loading:false})
+         this.setState({posts: res.data})
+         
+         
+      })
+      
+      
+   }
+   
+
+   
 
    render(){
       return(
          <Container>
+            <Loading loading={this.state.loading} />
             <Header style={styles.header}>
                <Left>
-                  <Button transparent onPress={()=> Navigation.push(this.props.componentId, {
-                     component:{
-                        name:"Profile"
-                     }
-                  })}>
-                     <Image source={require('../icon/camera.png')} style={styles.camImg} />
+                  <Button transparent>
+                     <Image source={require('../../assets/icon/camera.png')} style={styles.camImg} />
                   </Button>
                </Left>
                <Body style={{marginLeft:-20}}>
@@ -45,16 +107,24 @@ export default class Index extends Component{
                </Body>
                <Right style={{}}>
                   <Button transparent style={{marginRight: -10}}>
-                     <Image source={require('../icon/tv.png')} style={styles.topIcon} />
+                     <Image source={require('../../assets/icon/tv.png')} style={styles.topIcon} />
                   </Button>
-                  <Button transparent onPress={()=>
+                  <Button transparent onPress={()=>{
                      Navigation.push(this.props.componentId, {
                         component:{
-                           name: "Direct"
+                           name: "Direct",
+                           
+                        }
+                     }
+                     )
+                     Navigation.mergeOptions(this.props.componentId, {
+                        bottomTabs:{
+                           visible: false
                         }
                      })
+                     }
                   }>
-                     <Image source={require('../icon/paper-plane.png')} style={styles.topIcon} />
+                     <Image source={require('../../assets/icon/paper-plane.png')} style={styles.topIcon} />
                   </Button>
                </Right>
             </Header>
@@ -63,7 +133,9 @@ export default class Index extends Component{
                <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} style={styles.story}>
                   <View style={{marginHorizontal:5}}>
                      <View style={{alignItems:"center" ,position:"relative"}}>
-                        <Thumbnail  medium source={{uri: "https://facebook.github.io/react-native/docs/assets/favicon.png"}} />
+                           
+                           <Thumbnail medium source={{uri:this.userLog.profile_pic}} />
+                        
                         <MaterialIcons name='add-circle' size={20} color="#4297FF" style={{position:"absolute", bottom:-5, right:0}} />
                      </View>
                      <Text>Your Story</Text>
@@ -82,11 +154,11 @@ export default class Index extends Component{
                </ScrollView>
 
                <FlatList
-              data={posts}
+              data={this.state.posts}
               keyExtractor={(item,index) => {return index.toString()}}
-              renderItem={({item,index}) => <PostCard index={index} profilePic={item.profilePic} user={item.user} pics={item.pic} like={(item.like).toString()} caps={item.caption} commentInput={true} />}
+              renderItem={({item,index}) => <PostCard index={item.id} profilePic={{uri:item.profile_pic}} user={item.username} userId={item.user_id} pics={{uri:item.post}} like={(item.likes).toString()} caps={item.caption} commentInput={true} userLog={this.userLog.id} userPic={this.userLog.profile_pic} parentComponentId={this.props.componentId} />}
             />
-
+ 
             </Content>
 
             {/* <BottomBar/> */}

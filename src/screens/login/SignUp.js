@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scrollview'
 import {View, Text, TouchableWithoutFeedback, StyleSheet, Image} from 'react-native'
 import { Container, Content, Thumbnail, Tabs, Tab, Item, Input, Footer, TabHeading } from 'native-base';
-import TextField from '../components/TextField'
+import TextField from '../../components/TextField'
 import { Navigation } from 'react-native-navigation';
 
 export default class SignUp extends Component{
@@ -16,7 +16,7 @@ export default class SignUp extends Component{
         <Content>
           <View style={styles.container}>
             <View style={styles.imgWrapper}>
-              <Image large source={require('../icon/person-outline.png')} color="#AAA" style={styles.img} />
+              <Image large source={require('../../assets/icon/person-outline.png')} color="#AAA" style={styles.img} />
             </View>
             <View>
               <Tabs tabBarUnderlineStyle={{backgroundColor:"#AAA", height:2}}  tabContainerStyle={{elevation:0}}>

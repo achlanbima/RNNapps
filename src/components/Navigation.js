@@ -13,7 +13,8 @@ export const goToHome = () => {
           bottomTabs: {
             children: [
               {
-              stack: {
+                stack: {
+                  id:"navHome",
                 children: [{
                   component: {
                     name: 'Home'
@@ -22,9 +23,10 @@ export const goToHome = () => {
                ],
                 options: {
                   bottomTab: {
-                    icon: require('../icon/home-outline.png'),
-                    selectedIcon: require('../icon/home.png'),
-                    selectedIconColor: "#F00",
+                    icon: require('../assets/icon/home-outline.png'),
+                    selectedIcon: require('../assets/icon/home.png'),
+                    selectedIconColor: "#000",
+                    iconColor: "#888"
                     
                   },
                   topBar: {
@@ -45,25 +47,38 @@ export const goToHome = () => {
                 options: {
                   bottomTab: {
                     text: 'Search',
-                    icon: require('../icon/magnify.png'),
-                    testID: 'THIRD_TAB_BAR_BUTTON'
+                    icon: require('../assets/icon/magnify.png'),
+                    testID: 'THIRD_TAB_BAR_BUTTON',
+                    selectedIconColor: "#000",
+                    iconColor: "#888"
                   },
                 }
               }
             },
             {
-               component: {
-                 name: 'Add',
-                 passProps: {
-                   text: 'This is tab 3'
-                 },
-                 options: {
-                   bottomTab: {
-                     text: 'Post',
-                     icon: require('../icon/plus-square-outline.png'),
-                     testID: 'FOURTH_TAB_BAR_BUTTON'
-                   },
-                 }
+              stack: {
+                children: [{
+                  component: {
+                    name: 'AddPost'
+                  },
+                },
+               ],
+                options: {
+                  bottomTab: {
+                    text: 'Post',
+                    icon: require('../assets/icon/plus-square-outline.png'),
+                    testID: 'FOURTH_TAB_BAR_BUTTON',
+                    selectedIconColor: "#000",
+                    iconColor: "#888"
+                    
+                  },
+                  topBar: {
+                      drawBehind:true,
+                      visible:false,
+                      
+                  },
+                  
+                },
                }
              },
              {
@@ -75,8 +90,10 @@ export const goToHome = () => {
                  options: {
                    bottomTab: {
                      text: 'Likes',
-                     icon: require('../icon/heart-outline.png'),
-                     testID: 'FIFTH_TAB_BAR_BUTTON'
+                     icon: require('../assets/icon/heart-outline.png'),
+                     testID: 'FIFTH_TAB_BAR_BUTTON',
+                     selectedIconColor: "#000",
+                    iconColor: "#888"
                    },
                  }
                }
@@ -94,17 +111,17 @@ export const goToHome = () => {
                   ],
                   options: {
                     bottomTab: {
-                      icon: require('../icon/person-outline.png'),
-                      selectedIcon: require('../icon/home.png'),
-                      selectedIconColor: "#F00",
-                      
+                      icon: require('../assets/icon/person-outline.png'),
+                      selectedIcon: require('../assets/icon/home.png'),
+                      selectedIconColor: "#000",
+                    iconColor: "#888"
                       
                   },
                   topBar: {
                       drawBehind:true,
                       visible:false,
                       leftButtons: {
-                        icon: require('../icon/camera.png'),
+                        icon: require('../assets/icon/camera.png'),
                         id: 'buttonOne',
                         
                       },
@@ -114,30 +131,14 @@ export const goToHome = () => {
               },
                       right:{
                         component:{
-                          name:"myApp",
+                          name:"ProfileMenu",
                           id:"right-menu"
                         }
                       }
                 },
               },
               
-              // {
-                //   component: {
-                  //     name: 'Profile',
-                  //     passProps: {
-            //       text: 'This is tab 2'
-            //     },
-            //     options: {
-            //       bottomTab: {
-            //         text: 'Profile',
-            //         icon: require('../icon/person-outline.png'),
-            //         selectedIcon: require('../icon/person.png'),
-            //         testID: 'SECOND_TAB_BAR_BUTTON',
-            //         selectedIconColor: "#F00"
-            //       },
-            //     }
-            //   }
-            // },
+            
            ],
            options: {
                bottomTabs: {
@@ -152,4 +153,37 @@ export const goToHome = () => {
           },
         }
     });
+}
+
+export const goToLogin = () => {
+  Navigation.setRoot({
+    root: {
+      stack:{
+        children:[{
+          component: {
+            name:"Login"
+          }
+        }],
+        options:{
+          topBar:{
+            drawBehind:true,
+            visible:false,
+            id:"top-bar"
+          }
+      
+        }      
+      }
+    }
+  });
+
+  Navigation.setDefaultOptions({
+    animations: {
+      push: {
+        enabled: 'false'
+      },
+      pop:{
+        enabled: 'false'
+      }
+    }
+  });
 }

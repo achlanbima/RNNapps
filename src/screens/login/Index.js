@@ -8,47 +8,122 @@ import {StyleSheet,
     TouchableHighlight,
     ScrollView,
     FlatList,
-    TouchableOpacity
+    TouchableOpacity,
+    AsyncStorage
 } from 'react-native';
 import {Text, Item, Input, Footer, FooterTab, Button, Container, Content} from 'native-base';
-import {goToHome} from '../components/Navigation'
+import {goToHome} from '../../components/Navigation'
 import AntDesign from 'react-native-vector-icons/AntDesign'
 import { Navigation } from 'react-native-navigation';
-import TextField from '../components/TextField'
+import TextField from '../../components/TextField'
+import Loading from '../../components/Loading'
+import axios from 'axios'
 
+const GLOBAL = require('../../Globals')
 
+const url = GLOBAL.API_URL
 
 export default class Index extends Component{
 
-    languages = [
-        "Language 1",
-        "Language 1",
-        "Language 1",
-        "Language 1",
-        "Language 1",
-        "Language 1",
-        "Language 1",
-        "Language 1",
-        "Language 1",
-        "Language 1",
-        "Language 1",
-        "Language 1",
-        "Language 1",
-        "Language 1",
-        "Language 1",
-        "Language 1",
-        "Language 1",
-        "Language 1",
-        "Language 1",
-        "Language 1",
-    ];
+    constructor(props){
+        super(props)
+        this.languages = [
+            "Language 1",
+            "Language 1",
+            "Language 1",
+            "Language 1",
+            "Language 1",
+            "Language 1",
+            "Language 1",
+            "Language 1",
+            "Language 1",
+            "Language 1",
+            "Language 1",
+            "Language 1",
+            "Language 1",
+            "Language 1",
+            "Language 1",
+            "Language 1",
+            "Language 1",
+            "Language 1",
+            "Language 1",
+            "Language 1",
+        ];
+    
+        this.state = {
+            modalVisible: false,
+            email : "",
+            password : "",
+            loading: false
+        };
 
-    state = {
-        modalVisible: false,
-      };
+    }
+
+    componentDidMount(){
+        this._storeClear();
+    }
+
     
       setModalVisible(visible) {
         this.setState({modalVisible: visible});
+      }
+
+      _storeClear = async (token) => {
+        try{
+            // await AsyncStorage.setItem('@token', `Bearer ${token}`)
+            await AsyncStorage.removeItem('@token')
+            await AsyncStorage.removeItem('info')
+        }
+        catch(error){
+
+
+
+        }
+        }
+      _storeToken = async (token) => {
+        try{
+            await AsyncStorage.setItem('@token', `Bearer ${token}`)
+            // await AsyncStorage.removeItem('@token')
+            }catch(error){
+        }
+        }
+
+      _storeInfo = async (info) => {
+        try{
+            await AsyncStorage.setItem('info', JSON.stringify(info))
+            // await AsyncStorage.removeItem('info')
+            }catch(error){
+        }
+        } 
+      
+
+      login(){
+        if(this.state.password == "" && this.state.email == ""){
+            alert('Email & Password Harus Diisi')
+        }else if(this.state.password == "" && this.state.email != ""){
+            alert('Password harus diisi!')
+        }else if(this.state.password != "" && this.state.email == ""){
+            alert('Email harus diisi!')
+        }else{
+            this.setState({loading:true})
+            axios.post(`${url}/login`, {
+                email: this.state.email,
+                password: this.state.password
+            }).then((res) => {
+                this.setState({loading:false})
+                if(res.data==""){
+                    alert('email/password salah')
+                }else{
+                    
+                    console.log(res.data.rows[0])
+                    console.log(res.data.token)
+                    this._storeToken(res.data.token)
+                    this._storeInfo(res.data.rows[0])
+                    goToHome()
+                }
+                
+            })
+        }
       }
 
       toSignUp(prop){
@@ -69,7 +144,7 @@ export default class Index extends Component{
                 {/* Your code goes here*/}
 
             <Container>
-
+                <Loading loading={this.state.loading}/>
                     <Dialog
                         visible={this.state.modalVisible}
                         onTouchOutside={() => {
@@ -85,7 +160,7 @@ export default class Index extends Component{
                                 </TouchableOpacity>
                             </View>
                                 <Item style={{paddingHorizontal:10, marginLeft:-10, marginRight:-10}}>
-                                <Image source={require('../icon/magnify.png')} style={{width:23, height:23, marginRight:10}} />
+                                <Image source={require('../../assets/icon/magnify.png')} style={{width:23, height:23, marginRight:10}} />
                                     <Input placeholder="Search" placeholderTextColor="#CCC" />
                                 </Item>
                                 <ScrollView>
@@ -118,9 +193,9 @@ export default class Index extends Component{
                     
                     <View style={ styles.container }>
                         <Image source={{uri:'https://fontmeme.com/images/instagram-new-logo.png'}} style={styles.logo}/>
-                        <TextField placeholder="Phone number, email or username" />
-                        <TextField placeholder="Password" password={true} />
-                        <TouchableWithoutFeedback style={{width:"100%"}} onPress={goToHome}>
+                        <TextField placeholder="Phone number, email or username" value={this.state.email} changeText={(value)=> this.setState({email:value})} />
+                        <TextField placeholder="Password" password={true} value={this.state.password} changeText={(value)=> this.setState({password:value})} />
+                        <TouchableWithoutFeedback style={{width:"100%"}} onPress={() => this.login()}>
                             <View style={styles.loginBtn}>
                                 <Text style={styles.white}> Log In</Text>
                             </View>
@@ -136,9 +211,7 @@ export default class Index extends Component{
                                     },
                                     options:{
                                         topBar:{
-                                            title:{
-                                                text:"Pushed Sign In"
-                                            },
+                                            
                                             drawBehind:false,
                                             visible:true,
                                         }

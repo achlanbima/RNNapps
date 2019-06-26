@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scrollview'
 import {View, Text, StyleSheet, TouchableWithoutFeedback, Image} from 'react-native'
 import {Header, Left, Title, Container, Content, Footer, FooterTab} from 'native-base'
-import TextField from '../components/TextField'
+import TextField from '../../components/TextField'
 
 
 export default class Help extends Component{

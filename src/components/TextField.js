@@ -6,7 +6,7 @@ export default class TextField extends Component{
   render(){
       return (
           <Item regular style={styles.textItem} >
-              <Input placeholder={this.props.placeholder} placeholderTextColor='#AAA' secureTextEntry={this.props.password} style={ styles.placeholder } />
+              <Input placeholder={this.props.placeholder} placeholderTextColor='#AAA' secureTextEntry={this.props.password} style={ styles.placeholder } value={this.props.value} onChangeText={this.props.changeText}/>
           </Item>
       )
   }

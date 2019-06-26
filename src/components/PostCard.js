@@ -23,8 +23,15 @@ import {
    Card, CardItem, Thumbnail, Item, Input} from 'native-base';
 import Entypo from 'react-native-vector-icons/Entypo'
 
+import {goToHome} from '../components/Navigation'
+import { Navigation } from 'react-native-navigation';
+
+
+
+
 export default class PostCard extends Component {
    
+
    constructor(props){
       super(props)
       this.state = {
@@ -36,7 +43,57 @@ export default class PostCard extends Component {
 
    }
 
-   menus = ["Report...", "Copy Link", "Turn On Post Notification", "Share Link...", "Unfollow","Mute"]
+   
+
+   otherMenus = [
+      {
+         text:"Report...",
+         action : () => alert('report '+this.props.index  )
+      }, 
+      {
+         text:"Report...",
+         action : () => alert('report2'+this.props.index)
+      },
+      {
+         text:"Report...",
+         action : () => alert('report '+this.props.index  )
+      }, 
+      {
+         text:"Report...",
+         action : () => alert('report2'+this.props.index)
+      },
+   ]
+   
+   personalMenus = [
+      {
+         text:"Edit",
+         action : () => {
+            Navigation.push(this.props.parentComponentId, {
+               component:{
+                  name: 'Edit',
+                  passProps:{
+                     data:{
+                        username: this.props.user,
+                        id: this.props.index,
+                        pic: this.props.pics,
+                        caption: this.props.caps,
+                        profilePic: this.props.profilePic,
+                     }
+                  }
+               },
+               
+            })
+            this.setState({visible:false})
+         }
+      }, 
+      {
+         text:"Delete",
+         action : () => goToHome
+      }
+   ]
+
+   menus = this.props.userId == this.props.userLog ? this.personalMenus : this.otherMenus
+   
 
   render() {
      return(
@@ -49,14 +106,14 @@ export default class PostCard extends Component {
                this.setState({ visible: false });
             }}
          >
-            <DialogContent style={{height:270, width:250, alignItems:"center", paddingHorizontal: 5}}>
+            <DialogContent style={{minHeight:5, width:250, alignItems:"center", paddingHorizontal: 5, paddingTop:5, }}>
                <FlatList
                   data={this.menus}
                   keyExtractor={(item, index) => {return index.toString()}}
                   renderItem={({item, index}) =>
-                     <TouchableOpacity key={index} >
-                        <View style={{width:"100%", backgroundColor:"#FFF", paddingVertical:10, }}>
-                              <Text style={{color:"#000", fontSize:15}}>{item}</Text>
+                     <TouchableOpacity key={index} onPress={item.action}>
+                        <View style={{width:"100%", justifyContent:"center",backgroundColor:"#FFF", paddingVertical:10, }}>
+                              <Text style={{color:"#000", fontSize:15}}>{item.text}</Text>
                         </View>
                      </TouchableOpacity> }
                />
@@ -97,16 +154,16 @@ export default class PostCard extends Component {
                        console.log(e.target)
                        }}>
                         {this.state.like != null ?
-                        <Image source={require('../icon/heart-red.png')} style={styles.leftIcon} /> :
-                        <Image source={require('../icon/heart-outline.png')} style={styles.leftIcon} />
+                        <Image source={require('../assets/icon/heart-red.png')} style={styles.leftIcon} /> :
+                        <Image source={require('../assets/icon/heart-outline.png')} style={styles.leftIcon} />
                         
                         }
                     </Button>
                     <Button transparent>
-                       <Image source={require('../icon/bubble-outline.png')} style={styles.leftIcon} />
+                       <Image source={require('../assets/icon/bubble-outline.png')} style={styles.leftIcon} />
                     </Button>
                     <Button transparent>
-                       <Image source={require('../icon/paper-plane.png')} style={styles.leftIcon} />
+                       <Image source={require('../assets/icon/paper-plane.png')} style={styles.leftIcon} />
                     </Button>
                  </Left>
                  <Body/>
@@ -117,8 +174,8 @@ export default class PostCard extends Component {
                        console.log(e.target)
                        }}>
                           {this.state.bookmark != null ?
-                           <Image source={require('../icon/bookmark.png')} style={[styles.leftIcon, {height:23} ]} /> :
-                           <Image source={require('../icon/bookmark-outline.png')} style={[styles.leftIcon, {height:23} ]} /> 
+                           <Image source={require('../assets/icon/bookmark.png')} style={[styles.leftIcon, {height:23} ]} /> :
+                           <Image source={require('../assets/icon/bookmark-outline.png')} style={[styles.leftIcon, {height:23} ]} /> 
                           }
                     </Button>
                  </Right>
@@ -137,7 +194,7 @@ export default class PostCard extends Component {
               {this.props.commentInput ? (
               <CardItem style={styles.postComment}>
                  <Item style={{borderBottomWidth:0}}>
-                    <Thumbnail small source={{uri: 'https://facebook.github.io/react-native/docs/assets/favicon.png'}} />
+                    <Thumbnail small source={{uri: this.props.userPic}} />
                     <Input placeholder='Add a comment' style={styles.postCommentInput} />
                  </Item>
               </CardItem>
