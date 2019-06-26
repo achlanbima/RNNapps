@@ -7,7 +7,8 @@ import {
    StatusBar,
    StyleSheet,
    FlatList,
-   AsyncStorage
+   AsyncStorage,
+   Alert
 } from 'react-native';
 
 import {
@@ -85,9 +86,27 @@ export default class Index extends Component{
          
          
       })
-      
-      
    }
+
+   async delete(id){
+    
+      const token = await AsyncStorage.getItem('@token')
+      Alert.alert("Hapus data","Anda yakin?", [
+        {text: 'tidak'},
+        {text: 'ya', onPress: () => {
+          axios.delete(`${url}/post/${id}`, {
+            headers:{
+              Authorization:token
+           }
+          })
+            .then((res)=>{
+              alert('Post Berhasil dihapus')
+              this.fetchAll()
+            })
+        }},
+        
+      ],)
+    }
    
 
    
@@ -156,7 +175,21 @@ export default class Index extends Component{
                <FlatList
               data={this.state.posts}
               keyExtractor={(item,index) => {return index.toString()}}
-              renderItem={({item,index}) => <PostCard index={item.id} profilePic={{uri:item.profile_pic}} user={item.username} userId={item.user_id} pics={{uri:item.post}} like={(item.likes).toString()} caps={item.caption} commentInput={true} userLog={this.userLog.id} userPic={this.userLog.profile_pic} parentComponentId={this.props.componentId} />}
+              renderItem={({item,index}) => 
+              <PostCard 
+               index={item.id} 
+               profilePic={{uri:item.profile_pic}} 
+               user={item.username} 
+               userId={item.user_id} 
+               pics={{uri:item.post}} 
+               like={(item.likes).toString()} 
+               caps={item.caption} 
+               commentInput={true} 
+               userLog={this.userLog.id} 
+               userPic={this.userLog.profile_pic} 
+               parentComponentId={this.props.componentId} 
+               actionDelete={()=>this.delete(item.id)}
+               />}
             />
  
             </Content>

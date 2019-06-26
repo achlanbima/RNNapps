@@ -14,15 +14,12 @@ export default class AddPost extends Component{
   
   constructor(props){
     super(props)
-    Navigation.events().bindComponent(this);
+    Navigation.events().bindComponent(this)
     this.state = {
-      text: 'nothing yet'
-    };
-  this.state = {
-    loginInfo:[],
-    userId:"",
-    inputImgUrl:"",
-    inputCaption:""
+      loginInfo:[],
+      userId:"",
+      inputImgUrl:"",
+      inputCaption:""
   }
 }
 

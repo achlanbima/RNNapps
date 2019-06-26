@@ -88,7 +88,10 @@ export default class PostCard extends Component {
       }, 
       {
          text:"Delete",
-         action : () => goToHome
+         action : () => {
+            this.setState({visible:false})
+            this.props.actionDelete()
+         }
       }
    ]
 
