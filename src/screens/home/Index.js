@@ -44,9 +44,7 @@ export default class Index extends Component{
          loading: false
       }
       Navigation.events().bindComponent(this);
-      this.state = {
-         text: 'nothing yet'
-      };
+      
       this.userLog = []
       
    }
@@ -54,13 +52,11 @@ export default class Index extends Component{
    
    
    
-   componentWillMount(){
-      console.log("Will mount");
-      
-   }
+   
    
    
    componentDidAppear(){
+      this.setState({loading:false})
       this.fetchAll();
       console.log(" Appear..");
    }
@@ -115,6 +111,7 @@ export default class Index extends Component{
       return(
          <Container>
             <Loading loading={this.state.loading} />
+            {console.log(this.state.loading)}
             <Header style={styles.header}>
                <Left>
                   <Button transparent>
