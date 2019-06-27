@@ -110,6 +110,8 @@ export default class Index extends Component{
                 email: this.state.email,
                 password: this.state.password
             }).then((res) => {
+                console.log(res);
+                
                 this.setState({loading:false})
                 if(res.data==""){
                     alert('email/password salah')

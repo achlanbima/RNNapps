@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {View, Text, Image,  TouchableHighlight, StyleSheet, AsyncStorage, FlatList} from 'react-native';
+import {View, Text, Image,  TouchableHighlight, StyleSheet, AsyncStorage, FlatList, Alert} from 'react-native';
 import {
    Container, 
    Header, 
@@ -31,7 +31,6 @@ const url = GLOBAL.API_URL
 
 
 
-import ProfileContent from './ProfileContent'
 
 export default class Index extends Component{ 
 
@@ -68,11 +67,37 @@ export default class Index extends Component{
            }
          })
          .then((res) => {
-            console.log(res)
+            if(res.data.status==401){
+               alert("Silahkan Login Kembali")
+               goToLogin()
+            }else{
+               console.log(res);
             
-           this.setState({posts:res.data})
+            
+               this.setState({posts:res.data})
+            }
          })
          .catch(err => console.log(err))
+       }
+
+       async delete(id){
+    
+         const token = await AsyncStorage.getItem('@token')
+         Alert.alert("Hapus data","Anda yakin?", [
+           {text: 'tidak'},
+           {text: 'ya', onPress: () => {
+             axios.delete(`${url}/post/${id}`, {
+               headers:{
+                 Authorization:token
+              }
+             })
+               .then((res)=>{
+                 alert('Post Berhasil dihapus')
+                 this.fetchData()
+               })
+           }},
+           
+         ],)
        }
      
      
@@ -177,9 +202,36 @@ export default class Index extends Component{
                      <FlatList
                      data={this.state.posts}
                      keyExtractor={(item,index) => {return index.toString()}}
-                     renderItem={({item,index}) => <PostCard index={item.id} profilePic={{uri:item.profile_pic}} user={item.username}  userId={item.user_id} pics={{uri:item.post}} like={(item.likes).toString()} caps={item.caption} commentInput={false} userLog={this.state.loginInfo.id} parentComponentId={this.props.componentId}/>}
+                     renderItem={({item,index}) => 
+                        <PostCard 
+                           index={item.id} 
+                           profilePic={{uri:item.profile_pic}} 
+                           user={item.username} 
+                           userId={item.user_id} 
+                           pics={{uri:item.post}} 
+                           like={(item.likes).toString()} 
+                           caps={item.caption} 
+                           commentInput={false} 
+                           userLog={this.state.loginInfo.id} 
+                           parentComponentId={this.props.componentId} 
+                           actionDelete={()=>this.delete(item.id)}
+                        />}
                      />
-                     {/* { personalPosts.map((post, index) => (
+                     {/* 
+                     index={item.id} 
+                     profilePic={{uri:item.profile_pic}} 
+                     user={item.username} 
+                     userId={item.user_id} 
+                     pics={{uri:item.post}} 
+                     like={(item.likes).toString()} 
+                     caps={item.caption} 
+                     commentInput={true} 
+                     userLog={this.userLog.id} 
+                     userPic={this.userLog.profile_pic} 
+                     parentComponentId={this.props.componentId} 
+                     actionDelete={()=>this.delete(item.id)}
+                     
+                     { personalPosts.map((post, index) => (
                            <PostCard key={index} index={index} profilePic={post.profilePic} user={post.user} pics={post.pic} like={post.like} caps={post.caption} commentInput={false} />
                            ))} */}
                   </Tab>

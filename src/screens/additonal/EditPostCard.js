@@ -4,6 +4,7 @@ import {Thumbnail, Item, Input, Content, Container} from 'native-base'
 import AntDesign from 'react-native-vector-icons/AntDesign'
 import {Navigation} from 'react-native-navigation'
 import axios from 'axios'
+import {goToLogin} from '../../components/Navigation'
 
 const GLOBAL = require('../../Globals')
 
@@ -69,8 +70,15 @@ export default class EditPostCard extends Component{
       } 
     })
       .then((res)=>{
+        if(res.data.status==401){
+          alert("Silahkan Login Kembali")
+          goToLogin()
+       }else{
+          console.log(res);
+       
         alert('Post Berhasil diubah')
         Navigation.pop(this.props.componentId)
+       }
       })
      
   }

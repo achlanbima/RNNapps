@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {View, Text, TouchableHighlight, StyleSheet, AsyncStorage} from 'react-native';
 import {Item, Input} from 'native-base'
 import axios from 'axios'
-import {goToHome} from '../../components/Navigation'
+import {goToLogin} from '../../components/Navigation'
 import AntDesign from 'react-native-vector-icons/AntDesign'
 import { Navigation } from 'react-native-navigation';
 
@@ -43,12 +43,22 @@ componentDidAppear(){
         headers:{
           Authorization:token
        },
-      }).then((res) => {
-      alert('success')
-      this.setState({inputImgUrl:""})
-      this.setState({inputCaption:""})
-    
+      })
+      .then((res) => {
+        if(res.data.status==401){
+          alert("Silahkan Login Kembali")
+          goToLogin()
+       }else{
+          console.log(res);
+       
+          console.log(res);
+            
+          alert('success')
+          this.setState({inputImgUrl:""})
+          this.setState({inputCaption:""})
+       }  
     })
+      .catch((res) => console.log(res))
     }
 
   }

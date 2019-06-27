@@ -27,6 +27,7 @@ import { Navigation } from 'react-native-navigation';
 import PostCard from '../../components/PostCard'
 import axios from 'axios'
 import Loading from '../../components/Loading'
+import {goToLogin} from '../../components/Navigation'
 
 const GLOBAL = require('../../Globals')
 
@@ -51,12 +52,13 @@ export default class Index extends Component{
    
    
    
-   
+   componentWillMount(){
+      this.setState({loading:true})
+   }
    
    
    
    componentDidAppear(){
-      this.setState({loading:false})
       this.fetchAll();
       console.log(" Appear..");
    }
@@ -67,7 +69,6 @@ export default class Index extends Component{
    
 
    async fetchAll(){
-      this.setState({loading:true})
       const token = await AsyncStorage.getItem('@token')
       const value = await AsyncStorage.getItem('info');
       this.userLog = JSON.parse(value)
@@ -77,9 +78,15 @@ export default class Index extends Component{
          }
       })
       .then((res) => {
-         this.setState({loading:false})
-         this.setState({posts: res.data})
-         
+         if(res.data.status==401){
+            alert("Silahkan Login Kembali")
+            goToLogin()
+         }else{
+            console.log(res);
+            
+            this.setState({loading:false})
+            this.setState({posts: res.data})
+         }
          
       })
    }
@@ -96,8 +103,15 @@ export default class Index extends Component{
            }
           })
             .then((res)=>{
+               if(res.data.status==401){
+                  alert("Silahkan Login Kembali")
+                  goToLogin()
+               }else{
+                  console.log(res);
+               
               alert('Post Berhasil dihapus')
               this.fetchAll()
+               }
             })
         }},
         
@@ -173,20 +187,20 @@ export default class Index extends Component{
               data={this.state.posts}
               keyExtractor={(item,index) => {return index.toString()}}
               renderItem={({item,index}) => 
-              <PostCard 
-               index={item.id} 
-               profilePic={{uri:item.profile_pic}} 
-               user={item.username} 
-               userId={item.user_id} 
-               pics={{uri:item.post}} 
-               like={(item.likes).toString()} 
-               caps={item.caption} 
-               commentInput={true} 
-               userLog={this.userLog.id} 
-               userPic={this.userLog.profile_pic} 
-               parentComponentId={this.props.componentId} 
-               actionDelete={()=>this.delete(item.id)}
-               />}
+               <PostCard 
+                  index={item.id} 
+                  profilePic={{uri:item.profile_pic}} 
+                  user={item.username} 
+                  userId={item.user_id} 
+                  pics={{uri:item.post}} 
+                  like={(item.likes).toString()} 
+                  caps={item.caption} 
+                  commentInput={true} 
+                  userLog={this.userLog.id} 
+                  userPic={this.userLog.profile_pic} 
+                  parentComponentId={this.props.componentId} 
+                  actionDelete={()=>this.delete(item.id)}
+                  />}
             />
  
             </Content>

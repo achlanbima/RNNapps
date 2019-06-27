@@ -11,7 +11,6 @@ export default class Loading extends Component{
           
         >
           <DialogContent>
-            {/* <Image source={require('../assets/gif/jho.gif')} style={{width:100, height:80}} /> */}
             <Text style={{paddingBottom:0,paddingTop:20, fontSize:20}}>Loading...</Text>
           </DialogContent>
         </Dialog>

@@ -115,8 +115,8 @@ export default class PostCard extends Component {
                   keyExtractor={(item, index) => {return index.toString()}}
                   renderItem={({item, index}) =>
                      <TouchableOpacity key={index} onPress={item.action}>
-                        <View style={{width:"100%", justifyContent:"center",backgroundColor:"#FFF", paddingVertical:10, }}>
-                              <Text style={{color:"#000", fontSize:15}}>{item.text}</Text>
+                        <View style={{width:"100%", justifyContent:"center",backgroundColor:"#FFF", paddingVertical:5, marginTop:10 }}>
+                              <Text style={{alignSelf:"center", color:"#000", fontSize:15}}>{item.text}</Text>
                         </View>
                      </TouchableOpacity> }
                />
@@ -230,7 +230,7 @@ const styles = StyleSheet.create({
   },
   postImg: {
       height: 400, 
-      flex: 1
+      flex: 1,
   },
   postButton: {
       paddingTop: -20, 
