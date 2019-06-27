@@ -56,8 +56,6 @@ export default class Index extends Component{
       this.setState({loading:true})
    }
    
-   
-   
    componentDidAppear(){
       this.fetchAll();
       console.log(" Appear..");
@@ -65,7 +63,7 @@ export default class Index extends Component{
 
    componentDidDisappear() {
       console.log('componentDidDisappear');
-    }
+   }
    
 
    async fetchAll(){
@@ -76,8 +74,7 @@ export default class Index extends Component{
          headers:{
             Authorization:token
          }
-      })
-      .then((res) => {
+      }).then((res) => {
          if(res.data.status==401){
             alert("Silahkan Login Kembali")
             goToLogin()
@@ -87,12 +84,10 @@ export default class Index extends Component{
             this.setState({loading:false})
             this.setState({posts: res.data})
          }
-         
-      })
+      }).catch((err)=>{alert(err)})
    }
 
    async delete(id){
-    
       const token = await AsyncStorage.getItem('@token')
       Alert.alert("Hapus data","Anda yakin?", [
         {text: 'tidak'},
@@ -101,8 +96,7 @@ export default class Index extends Component{
             headers:{
               Authorization:token
            }
-          })
-            .then((res)=>{
+          }).then((res)=>{
                if(res.data.status==401){
                   alert("Silahkan Login Kembali")
                   goToLogin()
@@ -111,8 +105,8 @@ export default class Index extends Component{
                
               alert('Post Berhasil dihapus')
               this.fetchAll()
-               }
-            })
+              }
+          }).catch((err)=>{alert(err)})
         }},
         
       ],)
@@ -124,8 +118,9 @@ export default class Index extends Component{
    render(){
       return(
          <Container>
+            
             <Loading loading={this.state.loading} />
-            {console.log(this.state.loading)}
+            
             <Header style={styles.header}>
                <Left>
                   <Button transparent>
@@ -139,21 +134,7 @@ export default class Index extends Component{
                   <Button transparent style={{marginRight: -10}}>
                      <Image source={require('../../assets/icon/tv.png')} style={styles.topIcon} />
                   </Button>
-                  <Button transparent onPress={()=>{
-                     Navigation.push(this.props.componentId, {
-                        component:{
-                           name: "Direct",
-                           
-                        }
-                     }
-                     )
-                     Navigation.mergeOptions(this.props.componentId, {
-                        bottomTabs:{
-                           visible: false
-                        }
-                     })
-                     }
-                  }>
+                  <Button transparent>
                      <Image source={require('../../assets/icon/paper-plane.png')} style={styles.topIcon} />
                   </Button>
                </Right>
@@ -163,45 +144,38 @@ export default class Index extends Component{
                <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} style={styles.story}>
                   <View style={{marginHorizontal:5}}>
                      <View style={{alignItems:"center" ,position:"relative"}}>
-                           
-                           <Thumbnail medium source={{uri:this.userLog.profile_pic}} />
-                        
+                        <Thumbnail medium source={{uri:this.userLog.profile_pic}} />
                         <MaterialIcons name='add-circle' size={20} color="#4297FF" style={{position:"absolute", bottom:-5, right:0}} />
                      </View>
                      <Text>Your Story</Text>
                   </View>
-                  {
-                     stories.map((story, Index) => 
-                     (
-
+                  {stories.map((story, Index) => (
                         <View key={Index} style={{marginHorizontal:10}}>
                            <Thumbnail style={styles.storyThumbs} medium source={story.pic} />
                            <Text style={{alignSelf:"center"}} >{story.name}</Text>
                         </View>
-                     )
-                     )
-                  }
+                  ))}
                </ScrollView>
 
                <FlatList
-              data={this.state.posts}
-              keyExtractor={(item,index) => {return index.toString()}}
-              renderItem={({item,index}) => 
-               <PostCard 
-                  index={item.id} 
-                  profilePic={{uri:item.profile_pic}} 
-                  user={item.username} 
-                  userId={item.user_id} 
-                  pics={{uri:item.post}} 
-                  like={(item.likes).toString()} 
-                  caps={item.caption} 
-                  commentInput={true} 
-                  userLog={this.userLog.id} 
-                  userPic={this.userLog.profile_pic} 
-                  parentComponentId={this.props.componentId} 
-                  actionDelete={()=>this.delete(item.id)}
+                  data={this.state.posts}
+                  keyExtractor={(item,index) => {return index.toString()}}
+                  renderItem={({item,index}) => 
+                     <PostCard 
+                        index={item.id} 
+                        profilePic={{uri:item.profile_pic}} 
+                        user={item.username} 
+                        userId={item.user_id} 
+                        pics={{uri:item.post}} 
+                        like={(item.likes).toString()} 
+                        caps={item.caption} 
+                        commentInput={true} 
+                        userLog={this.userLog.id} 
+                        userPic={this.userLog.profile_pic} 
+                        parentComponentId={this.props.componentId} 
+                        actionDelete={()=>this.delete(item.id)}
                   />}
-            />
+               />
  
             </Content>
 

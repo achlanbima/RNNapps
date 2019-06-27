@@ -64,77 +64,76 @@ export default class Index extends Component{
     }
 
     
-      setModalVisible(visible) {
-        this.setState({modalVisible: visible});
-      }
+    setModalVisible(visible) {
+    this.setState({modalVisible: visible});
+    }
 
-      _storeClear = async (token) => {
+    _storeClear = async (token) => {
         try{
             // await AsyncStorage.setItem('@token', `Bearer ${token}`)
             await AsyncStorage.removeItem('@token')
             await AsyncStorage.removeItem('info')
         }
         catch(error){
-
-
-
+            alert(error)
         }
-        }
-      _storeToken = async (token) => {
+    }
+    _storeToken = async (token) => {
         try{
             await AsyncStorage.setItem('@token', `Bearer ${token}`)
             // await AsyncStorage.removeItem('@token')
-            }catch(error){
+        }catch(error){
+            alert(error)
         }
-        }
+    }
 
-      _storeInfo = async (info) => {
+    _storeInfo = async (info) => {
         try{
             await AsyncStorage.setItem('info', JSON.stringify(info))
             // await AsyncStorage.removeItem('info')
-            }catch(error){
+        }catch(error){
+            alert(error)
         }
-        } 
+    } 
       
 
-      login(){
-        if(this.state.password == "" && this.state.email == ""){
-            alert('Email & Password Harus Diisi')
-        }else if(this.state.password == "" && this.state.email != ""){
-            alert('Password harus diisi!')
-        }else if(this.state.password != "" && this.state.email == ""){
-            alert('Email harus diisi!')
-        }else{
-            this.setState({loading:true})
-            axios.post(`${url}/login`, {
-                email: this.state.email,
-                password: this.state.password
-            }).then((res) => {
-                console.log(res);
+    login(){
+    if(this.state.password == "" && this.state.email == ""){
+        alert('Email & Password Harus Diisi')
+    }else if(this.state.password == "" && this.state.email != ""){
+        alert('Password harus diisi!')
+    }else if(this.state.password != "" && this.state.email == ""){
+        alert('Email harus diisi!')
+    }else{
+        this.setState({loading:true})
+        axios.post(`${url}/login`, {
+            email: this.state.email,
+            password: this.state.password
+        }).then((res) => {
+            console.log(res);
+            
+            this.setState({loading:false})
+            if(res.data==""){
+                alert('email/password salah')
+            }else{
                 
-                this.setState({loading:false})
-                if(res.data==""){
-                    alert('email/password salah')
-                }else{
-                    
-                    console.log(res.data.rows[0])
-                    console.log(res.data.token)
-                    this._storeToken(res.data.token)
-                    this._storeInfo(res.data.rows[0])
-                    goToHome()
-                }
-                
-            })
-        }
-      }
+                console.log(res.data.rows[0])
+                console.log(res.data.token)
+                this._storeToken(res.data.token)
+                this._storeInfo(res.data.rows[0])
+                goToHome()
+            }
+        })
+    }
+    }
 
-      toSignUp(prop){
-          Navigation.push(prop, {
-              component:{
-                  name: "SignUp"
-              }
-          })
-      }
+    toSignUp(prop){
+        Navigation.push(prop, {
+            component:{
+                name: "SignUp"
+            }
+        })
+    }
 
     render(){
         return(
@@ -185,12 +184,10 @@ export default class Index extends Component{
                 <Content>
                     <View style={ styles.dropDown }>
                         <TouchableWithoutFeedback onPress={()=> this.setModalVisible(true)}>
-
                             <Text style={ [styles.grey, {fontSize:14}] }>English (United States) &nbsp; 
                                 <AntDesign name="down" size={10}/>
                             </Text>
                         </TouchableWithoutFeedback>
-
                     </View>
                     
                     <View style={ styles.container }>
@@ -203,8 +200,7 @@ export default class Index extends Component{
                             </View>
                         </TouchableWithoutFeedback>
                         <View style={styles.inlineBorderedBottom}>
-                            <Text style={styles.grey}>Forgot your login details? 
-                            </Text>
+                            <Text style={styles.grey}>Forgot your login details?</Text>
                             <TouchableWithoutFeedback onPress={() => {
                                 Navigation.push(this.props.componentId, {
                                     component:{
@@ -232,10 +228,10 @@ export default class Index extends Component{
                 </Content>
                 <Footer>
                     <FooterTab style={styles.footer}>
-                            <Text uppercase={false} style={[styles.grey]}>Dont have an account?</Text>
-                            <TouchableWithoutFeedback onPress={() => this.toSignUp(this.props.componentId)}>
-                                <Text style={styles.blackLink}> Sign up.</Text>
-                            </TouchableWithoutFeedback>
+                        <Text uppercase={false} style={[styles.grey]}>Dont have an account?</Text>
+                        <TouchableWithoutFeedback onPress={() => this.toSignUp(this.props.componentId)}>
+                            <Text style={styles.blackLink}> Sign up.</Text>
+                        </TouchableWithoutFeedback>
                     </FooterTab>
                 </Footer>
             </Container>

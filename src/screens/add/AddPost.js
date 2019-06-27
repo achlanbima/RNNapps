@@ -21,14 +21,14 @@ export default class AddPost extends Component{
       inputImgUrl:"",
       inputCaption:""
   }
-}
+  }
 
-componentDidAppear(){
-  AsyncStorage.getItem('info').then((info) => {
-    this.setState({loginInfo: JSON.parse(info)})
-    this.setState({userId: this.state.loginInfo.id})
-  })
-}
+  componentDidAppear(){
+    AsyncStorage.getItem('info').then((info) => {
+      this.setState({loginInfo: JSON.parse(info)})
+      this.setState({userId: this.state.loginInfo.id})
+    })
+  }
 
   async insert(){
     if(this.state.inputImgUrl==""){
@@ -64,16 +64,6 @@ componentDidAppear(){
   }
 
 
-  static get options(){
-    // return{
-      
-    //   bottomTabs:{
-    //     drawBehind:true,
-    //     visible:false
-    //   }
-    // }
-  }
-
   render(){
     return(
       <View>
@@ -92,7 +82,7 @@ componentDidAppear(){
             <Input placeholder="Image Url's" value={this.state.inputImgUrl} onChangeText={(value)=>this.setState({inputImgUrl:value})} />
           </Item>
           <Item>
-            <Input placeholder="Write a Caption.. " value={this.state.inputCaption} onChangeText={(value)=>this.setState({inputCaption:value})}/>
+            <Input multiline={true} placeholder="Write a Caption.. " value={this.state.inputCaption} onChangeText={(value)=>this.setState({inputCaption:value})}/>
           </Item>
         </View>
         {/* End Body */}

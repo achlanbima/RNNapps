@@ -13,8 +13,7 @@ const url = GLOBAL.API_URL
 export default class EditPostCard extends Component{
 
   static get options(){
-    return{
-      
+    return{      
       bottomTabs:{
         drawBehind:true,
         visible:false
@@ -35,11 +34,9 @@ export default class EditPostCard extends Component{
   componentDidAppear(){
     this.setState({postId:this.props.data.id})
     this.setState({inputCaption:this.props.data.caption})
-    
   }
 
   async delete(){
-    
     const token = await AsyncStorage.getItem('@token')
     Alert.alert("Hapus data","Anda yakin?", [
       {text: 'tidak'},
@@ -48,18 +45,15 @@ export default class EditPostCard extends Component{
           headers:{
             Authorization:token
          }
-        })
-          .then((res)=>{
+        }).then((res)=>{
             alert('Post Berhasil dihapus')
             Navigation.pop(this.props.componentId)
-          })
+        }).catch((err)=>{alert(err)})
       }},
-      
     ],)
   }
 
   async update(){
-    
     const token = await AsyncStorage.getItem('@token')
     axios.patch(`${url}/post/${this.state.postId}`,{
       caption: this.state.inputCaption,
@@ -68,8 +62,7 @@ export default class EditPostCard extends Component{
       headers:{
         Authorization:token
       } 
-    })
-      .then((res)=>{
+    }).then((res)=>{
         if(res.data.status==401){
           alert("Silahkan Login Kembali")
           goToLogin()
@@ -79,8 +72,7 @@ export default class EditPostCard extends Component{
         alert('Post Berhasil diubah')
         Navigation.pop(this.props.componentId)
        }
-      })
-     
+    }).catch((err)=>{alert(err)})
   }
   
   render(){
@@ -90,7 +82,7 @@ export default class EditPostCard extends Component{
           <View style={styles.headerLeft}>
             <TouchableWithoutFeedback onPress={()=> Navigation.pop(this.props.componentId)}>
               <View>
-                <AntDesign name="close" size={25} />
+                <AntDesign name="close" size={25} color={"#444"}/>
               </View>
             </TouchableWithoutFeedback>
             <Text style={styles.textHeader}>Edit Info</Text>
@@ -103,20 +95,19 @@ export default class EditPostCard extends Component{
           </TouchableOpacity>
           </View>
         </View>
-        <Content>
-
-        <View style={styles.postInfo}>
-          <Thumbnail small source={this.props.data.profilePic} />
-          <Text style={styles.postTitle}>{this.props.data.username}</Text>
-
-        </View>
-        <Image source={this.props.data.pic} style={{width:"100%", height: 350}}></Image>
-        <View style={styles.inputContainer}>
-          <Item style={{borderBottomColor:"#00F", paddingHorizontal:10}}>
-            <Input value={this.state.inputCaption} onChangeText={(value) => this.setState({inputCaption:value})} style={styles.input} placeholder="Write a caption.." placeholderTextColor="#CCC" />
-          </Item>
-        </View>
         
+        <Content>
+          <View style={styles.postInfo}>
+            <Thumbnail small source={this.props.data.profilePic} />
+            <Text style={styles.postTitle}>{this.props.data.username}</Text>
+
+          </View>
+          <Image source={this.props.data.pic} style={{width:"100%", height: 350}}></Image>
+          <View style={styles.inputContainer}>
+            <Item style={{borderBottomColor:"#00F", paddingHorizontal:10}}>
+              <Input multiline={true} value={this.state.inputCaption} onChangeText={(value) => this.setState({inputCaption:value})} style={styles.input} placeholder="Write a caption.." placeholderTextColor="#CCC" />
+            </Item>
+          </View>
         </Content>
       </Container>
     )

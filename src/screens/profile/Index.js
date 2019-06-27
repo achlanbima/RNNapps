@@ -46,70 +46,71 @@ export default class Index extends Component{
          id:""
       }
       Navigation.events().bindComponent(this);
-      
    }
    
    componentDidAppear(){
       this.fetchData()
-      }
+   }
 
-      async fetchData(){
-         let loginInfo = await AsyncStorage.getItem('info')
-         loginInfo = JSON.parse(loginInfo)
-         this.setState({loginInfo:loginInfo})
-         console.log("loginInfo profile");
-         console.log(loginInfo.id);
-         
-         const token = await AsyncStorage.getItem('@token')
-         axios.get(`${url}/posts/${loginInfo.id}`, {
-           headers:{
-              Authorization:token
-           }
-         })
-         .then((res) => {
-            if(res.data.status==401){
-               alert("Silahkan Login Kembali")
-               goToLogin()
-            }else{
-               console.log(res);
+   async fetchData(){
+      let loginInfo = await AsyncStorage.getItem('info')
+      loginInfo = JSON.parse(loginInfo)
+      this.setState({loginInfo:loginInfo})
+      console.log("loginInfo profile");
+      console.log(loginInfo.id);
+      
+      const token = await AsyncStorage.getItem('@token')
+      axios.get(`${url}/posts/${loginInfo.id}`, {
+         headers:{
+            Authorization:token
+         }
+      })
+      .then((res) => {
+         if(res.data.status==401){
+            alert("Silahkan Login Kembali")
+            goToLogin()
+         }else{
+            console.log(res);
+            console.log("POSTS");
             
             
-               this.setState({posts:res.data})
+            this.setState({posts:res.data})
+            console.log((this.state.loginInfo.followings));
+         }
+      })
+      .catch(err => console.log(err))
+   }
+
+   async delete(id){
+
+      const token = await AsyncStorage.getItem('@token')
+      Alert.alert("Hapus data","Anda yakin?", [
+         {text: 'tidak'},
+         {text: 'ya', onPress: () => {
+            axios.delete(`${url}/post/${id}`, {
+            headers:{
+               Authorization:token
             }
-         })
-         .catch(err => console.log(err))
-       }
-
-       async delete(id){
-    
-         const token = await AsyncStorage.getItem('@token')
-         Alert.alert("Hapus data","Anda yakin?", [
-           {text: 'tidak'},
-           {text: 'ya', onPress: () => {
-             axios.delete(`${url}/post/${id}`, {
-               headers:{
-                 Authorization:token
-              }
-             })
-               .then((res)=>{
-                 alert('Post Berhasil dihapus')
-                 this.fetchData()
-               })
-           }},
-           
-         ],)
-       }
+            })
+            .then((res)=>{
+               alert('Post Berhasil dihapus')
+               this.fetchData()
+            })
+         }},
+         
+      ],)
+   }
      
      
-       changeTab(index){
-         this.setState({selectedTab : index})  
-         console.log(index)
-       }
+   changeTab(index){
+      this.setState({selectedTab : index})  
+      console.log(index)
+   }
       
       
-      render(){
-         return(
-            <Container>
+   render(){
+      return(
+         <Container>
             <Header style={styles.header} has>
                <Left style={{marginLeft:-5, flex:2}}>
                   <Button  transparent onPress={()=>Navigation.push(this.props.componentId, {
@@ -117,10 +118,8 @@ export default class Index extends Component{
                         name:"myApp"
                      }
                   })}>
-                     
                         <Text  style={styles.headerTitle}>{this.state.loginInfo.username}</Text>
                         <Ionicons name='ios-arrow-down' size={15} color="#000" />
-                     
                   </Button>
                </Left>
                <Right style={{marginRight: -5}}>
@@ -141,43 +140,42 @@ export default class Index extends Component{
 
             <Content>
                <View>
-
-               <Card transparent>
-                  <CardItem>
-                  <Left>
-                     <View style={{ marginVertical:7, marginHorizontal:7}}>
-                        <Thumbnail large source={{uri: this.state.loginInfo.profile_pic}} />
-                        <MaterialIcons name='add-circle' size={25} color="#4297FF" style={styles.miniPlus} />
-                     </View>
-                  </Left>
-                  <Right style={{BackgroundColor:"blue"}}>
-                     <Grid style={{width:220, }}>
-                        <Row>
-                           <Col style={styles.center}>
-                              <Text style={styles.blackBold}>0</Text>
-                              <Text>Posts</Text>
-                           </Col>
-                           <Col style={styles.center}>
-                              <Text style={styles.blackBold}>0</Text>
-                              <Text>Followers</Text>
-                           </Col>
-                           <Col style={styles.center}>
-                              <Text style={styles.blackBold}>0</Text>
-                              <Text>Following</Text>
-                           </Col>
-                        </Row>
-                        <Row style={{}}>
-                           <TouchableHighlight style={styles.btnEdit}>
-                              <Text style={[styles.blackBold, {fontSize:13}]}>Edit Profile</Text>
-                           </TouchableHighlight>
-                        </Row>
-                     </Grid>
-                  </Right>               
-                  </CardItem>
-                  <CardItem>
-                     <Text style={{fontWeight:"bold"}}>{this.state.loginInfo.username}</Text>
-                  </CardItem>
-               </Card>
+                  <Card transparent>
+                     <CardItem>
+                     <Left>
+                        <View style={{ marginVertical:7, marginHorizontal:7}}>
+                           <Thumbnail large source={{uri: this.state.loginInfo.profile_pic}} />
+                           <MaterialIcons name='add-circle' size={25} color="#4297FF" style={styles.miniPlus} />
+                        </View>
+                     </Left>
+                     <Right style={{BackgroundColor:"blue"}}>
+                        <Grid style={{width:220, }}>
+                           <Row>
+                              <Col style={styles.center}>
+                                 <Text style={styles.blackBold}>{(this.state.posts).length}</Text>
+                                 <Text>Posts</Text>
+                              </Col>
+                              <Col style={styles.center}>
+                                 <Text style={styles.blackBold}>{this.state.loginInfo.followers}</Text>
+                                 <Text>Followers</Text>
+                              </Col>
+                              <Col style={styles.center}>
+                                 <Text style={styles.blackBold}>{this.state.loginInfo.following}</Text>
+                                 <Text>Following</Text>
+                              </Col>
+                           </Row>
+                           <Row style={{}}>
+                              <TouchableHighlight style={styles.btnEdit}>
+                                 <Text style={[styles.blackBold, {fontSize:13}]}>Edit Profile</Text>
+                              </TouchableHighlight>
+                           </Row>
+                        </Grid>
+                     </Right>               
+                     </CardItem>
+                     <CardItem>
+                        <Text style={{fontWeight:"bold"}}>{this.state.loginInfo.username}</Text>
+                     </CardItem>
+                  </Card>
                </View>
 
 
@@ -236,19 +234,19 @@ export default class Index extends Component{
                            ))} */}
                   </Tab>
                   <Tab heading={ <TabHeading style={{backgroundColor:"#FFF"}}><MaterialIcons name='person-pin' size={28} color={ this.state.selectedTab == 2 ? "#4297FF" : "#AAA" }/></TabHeading>}>
-              <Text>SSSS</Text>
-          </Tab>
-        </Tabs>
-               
-                  
-
-               </Content>
-               
-               </Container>
-               
-               
+               <Text>There is nothing here! Go back!</Text>
+            </Tab>
+         </Tabs>
             
-      );
+               
+
+      </Content>
+   
+   </Container>
+            
+            
+         
+   );
    }
 }
 

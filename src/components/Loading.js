@@ -8,7 +8,6 @@ export default class Loading extends Component{
       <View>
         <Dialog
           visible={this.props.loading}
-          
         >
           <DialogContent>
             <Text style={{paddingBottom:0,paddingTop:20, fontSize:20}}>Loading...</Text>

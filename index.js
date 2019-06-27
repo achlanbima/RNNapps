@@ -16,7 +16,7 @@ YellowBox.ignoreWarnings(["Require cycle:"]);
 
 registerScreen();
 
-Navigation.registerComponent(`myApp`, () => App);
+Navigation.registerComponent(`myApp`, () => App)
 // Navigation.registerComponent(`app2`, () => App2);
 
 _getStore = async () => {

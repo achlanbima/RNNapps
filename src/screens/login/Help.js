@@ -9,11 +9,12 @@ export default class Help extends Component{
   render(){
     return(
       
+      <KeyboardAwareScrollView  
+        keyboardShouldPersistTaps={'always'}
+        style={{flex:1}}
+        behavior="padding" enabled
+        showsVerticalScrollIndicator={false}>
       
-      <KeyboardAwareScrollView  keyboardShouldPersistTaps={'always'}
-                    style={{flex:1}}
-                    behavior="padding" enabled
-                    showsVerticalScrollIndicator={false}>
       <Container>
         <Header style={{backgroundColor:"#FFF", justifyContent:"flex-start", alignItems:"center"}}>
           <Text style={{fontSize:20, color:"#000", fontWeight:"400"}}>Login Help</Text>
@@ -27,15 +28,15 @@ export default class Help extends Component{
               <TextField placeholder="Username, email, or phone" />
                 <TouchableWithoutFeedback style={{width:"100%"}}>
                     <View style={styles.nextBtn}>
-                        <Text style={styles.white}>Next</Text>
+                      <Text style={styles.white}>Next</Text>
                     </View>
                 </TouchableWithoutFeedback>
                 <View style={{marginTop:30, alignItems:"center", borderTopColor:"#AAA", borderTopWidth:1}}>
                   <Text style={{marginTop:-10, backgroundColor:"#FFF", paddingHorizontal:2}}>OR</Text>
                 </View>
                 <View style={styles.inline}>
-                    <Image source={{uri:'https://www.brandeps.com/logo-download/F/Facebook-01.png'}} style={styles.miniLogo}/>
-                    <Text style={[styles.blue, styles.bold]}> Log in with Facebook</Text>
+                  <Image source={{uri:'https://www.brandeps.com/logo-download/F/Facebook-01.png'}} style={styles.miniLogo}/>
+                  <Text style={[styles.blue, styles.bold]}> Log in with Facebook</Text>
                 </View>
             </View>
           </View>
@@ -44,7 +45,7 @@ export default class Help extends Component{
             <FooterTab style={styles.footer}>
               <Text uppercase={false} style={[styles.grey]}>For more help, visit the </Text>
               <TouchableWithoutFeedback>
-                  <Text style={styles.blackLink}>Instagram Help Center</Text>
+                <Text style={styles.blackLink}>Instagram Help Center</Text>
               </TouchableWithoutFeedback>
             </FooterTab>
         </Footer>

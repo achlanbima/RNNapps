@@ -51,16 +51,24 @@ export default class PostCard extends Component {
          action : () => alert('report '+this.props.index  )
       }, 
       {
-         text:"Report...",
-         action : () => alert('report2'+this.props.index)
+         text:"Copy Link",
+         action : () => alert('Copy Link'+this.props.index)
       },
       {
-         text:"Report...",
-         action : () => alert('report '+this.props.index  )
+         text:"Turn On Post Notifications",
+         action : () => alert('Turn On Post Notifications '+this.props.index  )
       }, 
       {
-         text:"Report...",
-         action : () => alert('report2'+this.props.index)
+         text:"Share Link...",
+         action : () => alert('Share Link...'+this.props.index)
+      },
+      {
+         text:"Unfollow",
+         action : () => alert('Unfollow'+this.props.index)
+      },
+      {
+         text:"Mute",
+         action : () => alert('Mute'+this.props.index)
       },
    ]
    
@@ -109,14 +117,14 @@ export default class PostCard extends Component {
                this.setState({ visible: false });
             }}
          >
-            <DialogContent style={{minHeight:5, width:250, alignItems:"center", paddingHorizontal: 5, paddingTop:5, }}>
+            <DialogContent style={{minHeight:5, width:350, alignItems:"flex-start", paddingHorizontal: 5, paddingTop:5}}>
                <FlatList
-                  data={this.menus}
+                  data={this.props.userId == this.props.userLog ? this.personalMenus : this.otherMenus}
                   keyExtractor={(item, index) => {return index.toString()}}
                   renderItem={({item, index}) =>
                      <TouchableOpacity key={index} onPress={item.action}>
-                        <View style={{width:"100%", justifyContent:"center",backgroundColor:"#FFF", paddingVertical:5, marginTop:10 }}>
-                              <Text style={{alignSelf:"center", color:"#000", fontSize:15}}>{item.text}</Text>
+                        <View style={{width:350, paddingVertical:5, marginTop:10, paddingHorizontal:-20 }}>
+                              <Text style={{ color:"#000", fontSize:15}}>{item.text}</Text>
                         </View>
                      </TouchableOpacity> }
                />
@@ -137,7 +145,6 @@ export default class PostCard extends Component {
                         this.setState({ visible: true });
                      }}>
                         <View style={{paddingLeft:30}}>
-
                            <Entypo name='dots-three-vertical' size={15} color="#555" ></Entypo>
                         </View>
                      </TouchableWithoutFeedback>
@@ -145,20 +152,19 @@ export default class PostCard extends Component {
               </CardItem>
               
               <CardItem cardBody>
-              
                  <Image source={this.props.pics} style={styles.postImg}/>
               </CardItem >
               
               <CardItem style={styles.postButton}>
                  <Left>
                     <Button transparent  onPress={(e) => {
-                       this.setState({like : (this.state.like == null ? e.target : null)})
+                       this.setState({like : (this.state.like == null ? 'liked' : null)})
                        console.log(this.state.like)
                        console.log(e.target)
-                       }}>
+                     }}>
                         {this.state.like != null ?
-                        <Image source={require('../assets/icon/heart-red.png')} style={styles.leftIcon} /> :
-                        <Image source={require('../assets/icon/heart-outline.png')} style={styles.leftIcon} />
+                           <Image source={require('../assets/icon/heart-red.png')} style={styles.leftIcon} /> :
+                           <Image source={require('../assets/icon/heart-outline.png')} style={styles.leftIcon} />
                         
                         }
                     </Button>
@@ -189,9 +195,7 @@ export default class PostCard extends Component {
               </CardItem>
               
               <CardItem  style={styles.postCap}>
-                 
-                    <Text style={[styles.blackBold, {fontSize:14}]}>{this.props.user} <Text style={{color:"#AAA"}}>{this.props.caps}</Text></Text>
-                 
+                  <Text style={[styles.blackBold, {fontSize:14}]}>{this.props.user} <Text style={{color:"#AAA"}}>{this.props.caps}</Text></Text>
               </CardItem>
 
               {this.props.commentInput ? (
@@ -229,7 +233,7 @@ const styles = StyleSheet.create({
       fontSize:13
   },
   postImg: {
-      height: 400, 
+      height: 300, 
       flex: 1,
   },
   postButton: {
